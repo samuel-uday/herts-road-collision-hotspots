@@ -43,7 +43,13 @@ def load():
     return c, k, hotspots, cells, districts
 
 
+@st.cache_data
+def load_model():
+    return json.loads((ROOT / "models/ksi_logit.json").read_text())
+
+
 c_all, k_all, hotspots, cells, districts = load()
+MODEL = load_model()
 
 
 # ---------------------------------------------------------------- sidebar filters
@@ -120,8 +126,8 @@ vu = k.casualty_group.isin(["Pedestrian", "Cyclist", "Motorcyclist"])
 k5.metric("Vulnerable KSI", pct(k[k.is_ksi & vu].shape[0] / max(k.is_ksi.sum(), 1)),
           help="Pedestrians, cyclists and motorcyclists as a share of killed or seriously injured casualties")
 
-tab_over, tab_when, tab_where, tab_who, tab_hot = st.tabs(
-    ["📈 Overview", "🕒 When", "📍 Where", "🧍 Who", "🔥 Hotspots"])
+tab_over, tab_when, tab_where, tab_who, tab_hot, tab_pred = st.tabs(
+    ["📈 Overview", "🕒 When", "📍 Where", "🧍 Who", "🔥 Hotspots", "🔮 What-if"])
 
 
 # ---------------------------------------------------------------- Overview
@@ -329,3 +335,130 @@ with tab_hot:
             "gi_hotspot": "Gi* result",
         })
     st.download_button("Download hotspot table (CSV)", top.to_csv(index=False), "herts_hotspots.csv", "text/csv")
+
+
+# ---------------------------------------------------------------- What-if (severity model)
+FEATURE_LABELS = {
+    "time_band": "Time of day", "day_type": "Day", "district": "District", "speed_limit": "Speed limit",
+    "road_class": "Road type", "area": "Area", "light": "Light", "weather": "Weather", "surface": "Road surface",
+    "junction": "Junction", "vehicles": "Vehicles involved", "pedestrian": "Pedestrian hit",
+    "cyclist": "Cyclist involved", "motorcycle": "Motorcycle involved", "hgv": "HGV / lorry involved",
+    "bus": "Bus or minibus involved", "escooter": "E-scooter involved", "young_driver": "Young driver (17–24)",
+    "older_driver": "Older driver (70+)",
+}
+ORDERS = {
+    "time_band": ["Night (00–05)", "Morning peak (06–09)", "Daytime (10–15)", "Evening peak (16–18)",
+                  "Evening (19–21)", "Late (22–23)"],
+    "speed_limit": ["20 mph", "30 mph", "40 mph", "50 mph", "60 mph", "70 mph"],
+    "road_class": ["Motorway", "A", "B", "Unclassified"],
+    "light": ["Daylight", "Dark, street lights on", "Dark, no street lights"],
+    "vehicles": ["1 (single vehicle)", "2", "3 or more"],
+}
+YES_NO = ["pedestrian", "cyclist", "motorcycle", "hgv", "bus", "escooter", "young_driver", "older_driver"]
+
+
+def sigmoid(z):
+    return 1 / (1 + np.exp(-z))
+
+
+def options(f):
+    opts = MODEL["features"][f]["options"]
+    order = ORDERS.get(f)
+    return [o for o in order if o in opts] + [o for o in opts if o not in order] if order else sorted(opts)
+
+
+with tab_pred:
+    st.markdown("**If a collision happens under these conditions, how likely is it that someone is killed or "
+                "seriously injured?** Pick the conditions below; the estimate updates instantly.")
+
+    choice = {}
+    st.markdown("##### Where and when")
+    cols = st.columns(4)
+    for i, f in enumerate(["time_band", "day_type", "district", "speed_limit", "road_class", "area", "junction", "vehicles"]):
+        opts = options(f)
+        choice[f] = cols[i % 4].selectbox(FEATURE_LABELS[f], opts, index=opts.index(MODEL["features"][f]["default"]),
+                                          key=f"wi_{f}")
+    st.markdown("##### Conditions")
+    cols = st.columns(3)
+    for i, f in enumerate(["light", "weather", "surface"]):
+        opts = options(f)
+        choice[f] = cols[i].selectbox(FEATURE_LABELS[f], opts, index=opts.index(MODEL["features"][f]["default"]),
+                                      key=f"wi_{f}")
+    st.markdown("##### Who was involved")
+    TOGGLE_LABELS = {"pedestrian": "Pedestrian", "cyclist": "Cyclist", "motorcycle": "Motorcycle",
+                     "hgv": "HGV / lorry", "bus": "Bus", "escooter": "E-scooter",
+                     "young_driver": "Driver 17–24", "older_driver": "Driver 70+"}
+    cols = st.columns(4)
+    for i, f in enumerate(YES_NO):
+        choice[f] = "Yes" if cols[i % 4].toggle(TOGGLE_LABELS[f], key=f"wi_{f}", help=FEATURE_LABELS[f]) else "No"
+
+    feats = MODEL["features"]
+    contrib = {f: feats[f]["coef"][v] - feats[f]["mean_coef"] for f, v in choice.items()}
+    z_avg = MODEL["intercept"] + sum(feats[f]["mean_coef"] for f in feats)
+    prob = sigmoid(z_avg + sum(contrib.values()))
+    avg = MODEL["base_rate"]
+
+    st.markdown("---")
+    ratio = prob / avg
+    word = "higher than" if ratio > 1.05 else "lower than" if ratio < 0.95 else "about the same as"
+    colour = RED if ratio > 1.05 else BLUE if ratio < 0.95 else "#4b5563"
+    a, b = st.columns([2, 3], gap="large")
+    with a:
+        st.markdown(
+            f"<div style='font-size:.95rem;color:#4b5563'>Chance someone is killed or seriously injured</div>"
+            f"<div style='font-size:3.2rem;font-weight:700;line-height:1.1;color:{colour}'>{prob:.0%}</div>"
+            f"<div style='color:{colour};margin-bottom:.4rem'><b>{ratio:.1f}×</b> the Hertfordshire average "
+            f"({avg:.0%}): {word} average</div>", unsafe_allow_html=True)
+        gauge = go.Figure(go.Indicator(
+            mode="gauge", value=prob * 100,
+            gauge=dict(axis=dict(range=[0, 100], ticksuffix="%", tickvals=[0, 25, 50, 75, 100]),
+                       bar=dict(color=DARK, thickness=.3),
+                       steps=[dict(range=[0, 15], color="#dcfce7"), dict(range=[15, 30], color="#fef9c3"),
+                              dict(range=[30, 50], color="#fed7aa"), dict(range=[50, 100], color="#fecaca")],
+                       threshold=dict(line=dict(color=RED, width=3), value=avg * 100))))
+        gauge.update_layout(height=190, margin=dict(l=40, r=40, t=10, b=10))
+        st.plotly_chart(gauge, width="stretch", config={"displayModeBar": False})
+        st.caption("Red line on the dial = Hertfordshire average.")
+
+    with b:
+        st.markdown("**What's driving this estimate**  \n"
+                    "<span style='color:#4b5563;font-size:.9rem'>How each choice changes the odds compared with an "
+                    "average crash</span>", unsafe_allow_html=True)
+        cdf = pd.DataFrame([{"factor": f"{FEATURE_LABELS[f]}" if f in YES_NO else f"{FEATURE_LABELS[f]}: {choice[f]}",
+                             "mult": np.exp(v), "flag_off": f in YES_NO and choice[f] == "No"}
+                            for f, v in contrib.items()])
+        cdf = cdf[~cdf.flag_off & ((cdf.mult > 1.05) | (cdf.mult < 0.95))].sort_values("mult")
+        if cdf.empty:
+            st.info("These are all fairly typical conditions, so the risk is close to average.")
+        else:
+            cdf["effect"] = np.where(cdf.mult > 1, "Raises risk", "Lowers risk")
+            cdf["text"] = cdf.mult.map(lambda m: f"×{m:.1f}" if m >= 1 else f"×{m:.2f}")
+            fig = go.Figure(go.Bar(
+                y=cdf.factor, x=cdf.mult - 1, base=1, orientation="h", text=cdf.text, textposition="outside",
+                marker_color=np.where(cdf.mult > 1, RED, BLUE), cliponaxis=False,
+                hovertemplate="%{y}<br>%{text} odds<extra></extra>"))
+            lo, hi = min(0.4, cdf.mult.min() * 0.7), max(2.5, cdf.mult.max() * 1.6)
+            ticks = [t for t in [0.25, 0.5, 1, 2, 4, 8] if lo <= t <= hi]
+            fig.update_xaxes(type="log", range=[np.log10(lo), np.log10(hi)], tickvals=ticks,
+                             ticktext=[{0.25: "×¼", 0.5: "×½"}.get(t, f"×{t:g}") for t in ticks], title="")
+            fig.add_vline(1, line_color="black", line_width=1)
+            fig.update_layout(showlegend=False, height=max(220, 36 * len(cdf) + 70),
+                              margin=dict(l=10, r=30, t=10, b=10), font=dict(family="Inter, system-ui, sans-serif"))
+            st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
+            st.caption("Red = raises risk, blue = lowers it. Only choices that change the odds by more than 5% are shown.")
+
+    m = MODEL["test_metrics_2025"]
+    with st.expander("About this model, and how far to trust it"):
+        st.markdown(f"""
+- **What it is:** a logistic regression trained on {MODEL['n_train']:,} police-reported injury collisions in
+  Hertfordshire (DfT STATS19, 2021–2025). Every option above has one weight; the dashboard just adds them up.
+- **What it predicts:** how *severe* a crash is likely to be **if it happens**. It does **not** predict the chance
+  of a crash happening.
+- **How good it is:** tested on 2025 data it never saw while learning, it scores ROC AUC **{m['roc_auc']:.2f}**
+  (0.5 = guessing, 1 = perfect). The 20% of crashes it rates riskiest contained **{m['top20_capture']:.0%}** of the
+  serious ones. A more complex gradient-boosting model scored {m['gbm_roc_auc']:.2f}, no better.
+- **Limits:** the open data has no impact speed, seatbelt use or vehicle safety ratings, which matter a lot. So read
+  this as *relative* risk. The factors are associations, not proof of cause. For example, "rural" partly
+  stands in for higher real speeds.
+- **Full method:** see `notebooks/04_model.ipynb` in the GitHub repo.
+""")

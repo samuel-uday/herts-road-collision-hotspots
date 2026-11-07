@@ -1,0 +1,392 @@
+{
+ "description": "Logistic regression: P(collision is KSI | collision happened) in Hertfordshire. DfT STATS19 2021\u20132025.",
+ "intercept": 0.1502310174677672,
+ "features": {
+  "time_band": {
+   "options": [
+    "Daytime (10\u201315)",
+    "Evening (19\u201321)",
+    "Evening peak (16\u201318)",
+    "Late (22\u201323)",
+    "Morning peak (06\u201309)",
+    "Night (00\u201305)"
+   ],
+   "coef": {
+    "Daytime (10\u201315)": -0.16488181125861356,
+    "Evening (19\u201321)": 0.1158569735954782,
+    "Evening peak (16\u201318)": -0.19522495924100802,
+    "Late (22\u201323)": 0.12675829381117454,
+    "Morning peak (06\u201309)": -0.28785989514529087,
+    "Night (00\u201305)": 0.5490779141928217
+   },
+   "freq": {
+    "Daytime (10\u201315)": 0.36095522388059703,
+    "Evening (19\u201321)": 0.1235820895522388,
+    "Evening peak (16\u201318)": 0.23665671641791045,
+    "Late (22\u201323)": 0.042865671641791045,
+    "Morning peak (06\u201309)": 0.19128358208955223,
+    "Night (00\u201305)": 0.04465671641791045
+   },
+   "mean_coef": -0.11650767780484485,
+   "default": "Daytime (10\u201315)"
+  },
+  "day_type": {
+   "options": [
+    "Weekday",
+    "Weekend"
+   ],
+   "coef": {
+    "Weekday": 0.0008569466497633646,
+    "Weekend": 0.14286956930479405
+   },
+   "freq": {
+    "Weekday": 0.7504477611940299,
+    "Weekend": 0.24955223880597016
+   },
+   "mean_coef": 0.036296514572033714,
+   "default": "Weekday"
+  },
+  "district": {
+   "options": [
+    "Broxbourne",
+    "Dacorum",
+    "East Hertfordshire",
+    "Hertsmere",
+    "North Hertfordshire",
+    "St Albans",
+    "Stevenage",
+    "Three Rivers",
+    "Watford",
+    "Welwyn Hatfield"
+   ],
+   "coef": {
+    "Broxbourne": -0.18350255814377342,
+    "Dacorum": 0.17768928648297702,
+    "East Hertfordshire": -0.05944526760723925,
+    "Hertsmere": -0.12653799852988784,
+    "North Hertfordshire": 0.22443628390177645,
+    "St Albans": -0.03730215402304194,
+    "Stevenage": -0.006329109996696898,
+    "Three Rivers": 0.20920321729727134,
+    "Watford": -0.09256324168724124,
+    "Welwyn Hatfield": 0.038078058260414854
+   },
+   "freq": {
+    "Broxbourne": 0.08250746268656717,
+    "Dacorum": 0.10411940298507463,
+    "East Hertfordshire": 0.10949253731343284,
+    "Hertsmere": 0.14113432835820897,
+    "North Hertfordshire": 0.1008955223880597,
+    "St Albans": 0.15140298507462688,
+    "Stevenage": 0.06388059701492538,
+    "Three Rivers": 0.0706865671641791,
+    "Watford": 0.07856716417910448,
+    "Welwyn Hatfield": 0.09731343283582089
+   },
+   "mean_coef": 0.006806487082652152,
+   "default": "St Albans"
+  },
+  "speed_limit": {
+   "options": [
+    "20 mph",
+    "30 mph",
+    "40 mph",
+    "50 mph",
+    "60 mph",
+    "70 mph"
+   ],
+   "coef": {
+    "20 mph": -0.6152553892573325,
+    "30 mph": -0.16731842256897925,
+    "40 mph": -0.007144984581097505,
+    "50 mph": 0.181705230093737,
+    "60 mph": 0.36735665785944815,
+    "70 mph": 0.38438342440878825
+   },
+   "freq": {
+    "20 mph": 0.05217910447761194,
+    "30 mph": 0.4976716417910448,
+    "40 mph": 0.14173134328358208,
+    "50 mph": 0.04250746268656717,
+    "60 mph": 0.10805970149253731,
+    "70 mph": 0.15785074626865672
+   },
+   "mean_coef": -0.0082902880867025,
+   "default": "30 mph"
+  },
+  "road_class": {
+   "options": [
+    "A",
+    "B",
+    "Motorway",
+    "Unclassified"
+   ],
+   "coef": {
+    "A": 0.10048098495260208,
+    "B": 0.3019468748824287,
+    "Motorway": -0.2507228191173373,
+    "Unclassified": -0.007978524763131866
+   },
+   "freq": {
+    "A": 0.3709850746268657,
+    "B": 0.11928358208955224,
+    "Motorway": 0.11797014925373134,
+    "Unclassified": 0.39176119402985077
+   },
+   "mean_coef": 0.04059076575755416,
+   "default": "Unclassified"
+  },
+  "area": {
+   "options": [
+    "Rural",
+    "Urban"
+   ],
+   "coef": {
+    "Rural": 0.14267918020532894,
+    "Urban": 0.0010473357492339725
+   },
+   "freq": {
+    "Rural": 0.44656716417910447,
+    "Urban": 0.5534328358208955
+   },
+   "mean_coef": 0.06429546688544832,
+   "default": "Urban"
+  },
+  "light": {
+   "options": [
+    "Dark, no street lights",
+    "Dark, street lights on",
+    "Daylight"
+   ],
+   "coef": {
+    "Dark, no street lights": 0.2670850343874609,
+    "Dark, street lights on": -0.09147727564895142,
+    "Daylight": -0.03188124278395021
+   },
+   "freq": {
+    "Dark, no street lights": 0.053014925373134326,
+    "Dark, street lights on": 0.21194029850746268,
+    "Daylight": 0.735044776119403
+   },
+   "mean_coef": -0.028662368905892965,
+   "default": "Daylight"
+  },
+  "weather": {
+   "options": [
+    "Fine",
+    "Other / unknown",
+    "Rain"
+   ],
+   "coef": {
+    "Fine": 0.10093630586480111,
+    "Other / unknown": 0.029024725753402,
+    "Rain": 0.01376548433635647
+   },
+   "freq": {
+    "Fine": 0.8453731343283583,
+    "Other / unknown": 0.039641791044776116,
+    "Rain": 0.11498507462686568
+   },
+   "mean_coef": 0.08806225861359196,
+   "default": "Fine"
+  },
+  "surface": {
+   "options": [
+    "Dry",
+    "Ice, snow, flood / unknown",
+    "Wet"
+   ],
+   "coef": {
+    "Dry": 0.26684808459659615,
+    "Ice, snow, flood / unknown": -0.4935452637550876,
+    "Wet": 0.37042369511304996
+   },
+   "freq": {
+    "Dry": 0.7006567164179105,
+    "Ice, snow, flood / unknown": 0.07343283582089552,
+    "Wet": 0.22591044776119404
+   },
+   "mean_coef": 0.23440905723669708,
+   "default": "Dry"
+  },
+  "junction": {
+   "options": [
+    "Crossroads",
+    "Not at a junction",
+    "Other / unknown junction",
+    "T-junction"
+   ],
+   "coef": {
+    "Crossroads": 0.09130446194474726,
+    "Not at a junction": 0.12712416216486006,
+    "Other / unknown junction": -0.08244684663307278,
+    "T-junction": 0.007744738478026526
+   },
+   "freq": {
+    "Crossroads": 0.04776119402985075,
+    "Not at a junction": 0.6056119402985075,
+    "Other / unknown junction": 0.09504477611940298,
+    "T-junction": 0.2515820895522388
+   },
+   "mean_coef": 0.07546101603956361,
+   "default": "Not at a junction"
+  },
+  "vehicles": {
+   "options": [
+    "1 (single vehicle)",
+    "2",
+    "3 or more"
+   ],
+   "coef": {
+    "1 (single vehicle)": 0.4612409666866459,
+    "2": -0.34329476051580105,
+    "3 or more": 0.025780309783718272
+   },
+   "freq": {
+    "1 (single vehicle)": 0.20859701492537314,
+    "2": 0.6770149253731343,
+    "3 or more": 0.11438805970149253
+   },
+   "mean_coef": -0.13325322824480232,
+   "default": "2"
+  },
+  "pedestrian": {
+   "options": [
+    "No",
+    "Yes"
+   ],
+   "coef": {
+    "No": -0.3108994197714864,
+    "Yes": 0.4546259357260531
+   },
+   "freq": {
+    "No": 0.8618507462686568,
+    "Yes": 0.1381492537313433
+   },
+   "mean_coef": -0.20514266319708008,
+   "default": "No"
+  },
+  "cyclist": {
+   "options": [
+    "No",
+    "Yes"
+   ],
+   "coef": {
+    "No": -0.5316191293478801,
+    "Yes": 0.6753456453024372
+   },
+   "freq": {
+    "No": 0.8896716417910447,
+    "Yes": 0.11032835820895523
+   },
+   "mean_coef": -0.398456687344669,
+   "default": "No"
+  },
+  "motorcycle": {
+   "options": [
+    "No",
+    "Yes"
+   ],
+   "coef": {
+    "No": -0.6515130967450509,
+    "Yes": 0.7952396126996124
+   },
+   "freq": {
+    "No": 0.8600597014925373,
+    "Yes": 0.13994029850746267
+   },
+   "mean_coef": -0.44905409071888425,
+   "default": "No"
+  },
+  "hgv": {
+   "options": [
+    "No",
+    "Yes"
+   ],
+   "coef": {
+    "No": 0.017189130774042057,
+    "Yes": 0.12653738518051888
+   },
+   "freq": {
+    "No": 0.9408955223880597,
+    "Yes": 0.0591044776119403
+   },
+   "mean_coef": 0.02365210222851442,
+   "default": "No"
+  },
+  "bus": {
+   "options": [
+    "No",
+    "Yes"
+   ],
+   "coef": {
+    "No": -0.2570343826610814,
+    "Yes": 0.4007608986156437
+   },
+   "freq": {
+    "No": 0.987820895522388,
+    "Yes": 0.012179104477611941
+   },
+   "mean_coef": -0.24902302520553207,
+   "default": "No"
+  },
+  "escooter": {
+   "options": [
+    "No",
+    "Yes"
+   ],
+   "coef": {
+    "No": -0.6556933556992874,
+    "Yes": 0.799419871653847
+   },
+   "freq": {
+    "No": 0.990089552238806,
+    "Yes": 0.009910447761194029
+   },
+   "mean_coef": -0.6412725320729817,
+   "default": "No"
+  },
+  "young_driver": {
+   "options": [
+    "No",
+    "Yes"
+   ],
+   "coef": {
+    "No": 0.09236110744557115,
+    "Yes": 0.05136540850898847
+   },
+   "freq": {
+    "No": 0.7682388059701493,
+    "Yes": 0.23176119402985074
+   },
+   "mean_coef": 0.08285989530994047,
+   "default": "No"
+  },
+  "older_driver": {
+   "options": [
+    "No",
+    "Yes"
+   ],
+   "coef": {
+    "No": -0.0961778600131788,
+    "Yes": 0.23990437596773634
+   },
+   "freq": {
+    "No": 0.897910447761194,
+    "Yes": 0.10208955223880598
+   },
+   "mean_coef": -0.061867375026470446,
+   "default": "No"
+  }
+ },
+ "base_rate": 0.20943283582089553,
+ "C": 1,
+ "n_train": 8375,
+ "test_metrics_2025": {
+  "roc_auc": 0.649,
+  "pr_auc": 0.355,
+  "brier": 0.168,
+  "gbm_roc_auc": 0.647,
+  "top20_capture": 0.3275862068965517
+ }
+}
