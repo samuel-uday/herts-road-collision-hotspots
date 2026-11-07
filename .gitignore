@@ -1,0 +1,15 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Raw national DfT files are large (240 MB+); re-download with scripts/00_download_data.py
+data/raw/
+
+# Intermediate extract, recreated by scripts/01_filter_herts.py
+data/clean/*_raw_codes.csv
+
+# Local tooling
+.claude/
+.DS_Store

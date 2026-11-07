@@ -1,0 +1,162 @@
+{
+ "51.6914,-0.0451": {
+  "road": null,
+  "area": "Churchgate"
+ },
+ "51.7529,-0.3381": {
+  "road": "St Peter's Street",
+  "area": "Townsend"
+ },
+ "51.7327,-0.3445": {
+  "road": "Park Street Roundabout",
+  "area": "St Julians"
+ },
+ "51.6556,-0.3988": {
+  "road": "Exchange Road",
+  "area": "Watford Heath"
+ },
+ "51.6863,-0.1708": {
+  "road": "M25",
+  "area": "Potters Bar"
+ },
+ "51.6651,-0.3615": {
+  "road": "North Western Avenue",
+  "area": "Bushey"
+ },
+ "51.7151,-0.3709": {
+  "road": "M25",
+  "area": "St Stephen"
+ },
+ "51.6710,-0.3697": {
+  "road": "Otterspool Way",
+  "area": "Bushey"
+ },
+ "51.7785,-0.2215": {
+  "road": "Jack Olding's Roundabout",
+  "area": "Birchwood"
+ },
+ "51.7059,-0.3812": {
+  "road": "M1",
+  "area": "Abbots Langley"
+ },
+ "51.6815,-0.3937": {
+  "road": "The Dome",
+  "area": "Garston"
+ },
+ "51.7310,-0.3022": {
+  "road": "London Colney Roundabout",
+  "area": "The Camp"
+ },
+ "51.7525,-0.2460": {
+  "road": "Roehyde Interchange",
+  "area": "Ellenbrook"
+ },
+ "51.6782,-0.3967": {
+  "road": "St Albans Road",
+  "area": "North Watford"
+ },
+ "51.7021,-0.0349": {
+  "road": "The Old Pond",
+  "area": "Cheshunt"
+ },
+ "51.6858,-0.0296": {
+  "road": "Eleanor Cross Road",
+  "area": "Waltham Cross"
+ },
+ "51.6580,-0.2714": {
+  "road": "Eldon Avenue",
+  "area": "Elstree and Borehamwood"
+ },
+ "51.6610,-0.4019": {
+  "road": "A411",
+  "area": "North Watford"
+ },
+ "51.6636,-0.3981": {
+  "road": "Westland Road",
+  "area": "North Watford"
+ },
+ "51.7575,-0.4167": {
+  "road": "M1",
+  "area": "St Michael"
+ },
+ "51.7083,-0.0416": {
+  "road": "Church Lane",
+  "area": "Churchgate"
+ },
+ "51.6875,-0.2272": {
+  "road": "Bignells Corner",
+  "area": "South Mimms and Ridge"
+ },
+ "51.7010,-0.4430": {
+  "road": "M25",
+  "area": "Kings Langley"
+ },
+ "51.6841,-0.4305": {
+  "road": "Hunton Bridge Interchange",
+  "area": "Abbots Langley"
+ },
+ "51.7667,-0.4155": {
+  "road": "M1",
+  "area": "Redbourn"
+ },
+ "51.9283,-0.2195": {
+  "road": "A1(M)",
+  "area": "Fishers Green"
+ },
+ "51.8907,-0.1949": {
+  "road": null,
+  "area": "Roebuck"
+ },
+ "51.7864,-0.0149": {
+  "road": "Amwell Roundabout",
+  "area": "Stanstead St Margarets"
+ },
+ "51.7693,-0.2331": {
+  "road": "The Airfield Roundabout",
+  "area": "Hatfield Garden Village"
+ },
+ "51.7174,-0.2787": {
+  "road": "The Bell Roundabout",
+  "area": "Shenley"
+ },
+ "51.8874,-0.2061": {
+  "road": "A1(M)",
+  "area": "Stevenage"
+ },
+ "52.0454,-0.0551": {
+  "road": "Baldock Road",
+  "area": "Therfield"
+ },
+ "51.6553,-0.3876": {
+  "road": "Waterfields Way",
+  "area": "Watford Heath"
+ },
+ "51.7969,-0.0736": {
+  "road": "Fore Street",
+  "area": "Folly Island"
+ },
+ "51.8196,-0.4159": {
+  "road": "A5183",
+  "area": "Flamstead"
+ },
+ "51.6721,-0.3963": {
+  "road": "St Albans Road",
+  "area": "North Watford"
+ },
+ "51.7154,-0.2762": {
+  "road": null,
+  "area": "Shenley"
+ },
+ "51.9442,-0.2823": {
+  "road": "Charlton Road",
+  "area": "West Hitchin"
+ },
+ "51.9046,-0.2071": {
+  "road": "Lytton Way",
+  "area": "Old Town"
+ },
+ "51.7135,-0.4502": {
+  "road": "High Street",
+  "area": "Kings Langley"
+ }
+}
